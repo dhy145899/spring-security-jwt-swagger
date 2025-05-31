@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/securitydb
+    username: root
+    password: 123456
+mybatis-plus:
+  mapper-locations: classpath:/mappers/*.xml
+  type-aliases-package: com.hniu.pojo
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # ?? SQL ??
+# JWT??
+jwt:
+  jwtSecret: "VGhpcyBpcyBhIHN0cm9uZyA1MTJiaXQgS1NITUFDIGtleSBmb3IgSFM1MTIhISEhMTIzNDU2Nzg5MGFiY2RlZmdoaWpr"
+  jwtExpirationMs: 86400000 # 24??
+springdoc:
+  api-docs:
+    path: /v3/api-docs  # 自定义 OpenAPI 文档路径
+  swagger-ui:
+    path: /swagger-ui.html     # 自定义 Swagger UI 路径

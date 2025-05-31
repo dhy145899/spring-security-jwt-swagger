@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hniu.mapper.UserMapper">
+
+    <resultMap id="userResultMap" type="com.hniu.pojo.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <collection property="role" column="id" ofType="com.hniu.pojo.Role" select="com.hniu.mapper.RoleMapper.findByUid"/>
+    </resultMap>
+
+    <select id="findByUsername" resultMap="userResultMap">
+        select * from users where username=#{username}
+    </select>
+
+    <!-- 插入用户 -->
+    <insert id="insertUserWithRoles" parameterType="com.hniu.pojo.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users(username, password)
+        VALUES(#{username}, #{password})
+
+        <!-- 插入后立即获取自增ID -->
+        <selectKey resultType="int" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <resultMap id="userWithRolesResultMap" type="User">
+        <id property="id" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <collection property="role" ofType="Role">
+            <id property="id" column="role_id"/>
+            <result property="uid" column="uid"/>
+            <result property="role" column="role"/>
+        </collection>
+    </resultMap>
+
+    <select id="getUserWithRolesByUsername" resultMap="userWithRolesResultMap">
+        SELECT
+            u.id as user_id,
+            u.username,
+            u.password,
+            r.id as role_id,
+            r.uid,
+            r.role
+        FROM users u
+                 LEFT JOIN roles r ON u.id = r.uid
+        WHERE u.username = #{username}
+    </select>
+
+    <!-- 根据ID查询用户及其角色 -->
+    <select id="getUserWithRolesById" parameterType="int" resultMap="userWithRolesResultMap">
+        SELECT
+            u.id as user_id,
+            u.username,
+            u.password,
+            r.id as role_id,
+            r.uid,
+            r.role
+        FROM users u
+                 LEFT JOIN roles r ON u.id = r.uid
+        WHERE u.id = #{id}
+    </select>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE users
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>
