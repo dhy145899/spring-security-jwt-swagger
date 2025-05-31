@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# 添加以下内容
+.lingma/
+springpro.sql  # 如果包含敏感数据
