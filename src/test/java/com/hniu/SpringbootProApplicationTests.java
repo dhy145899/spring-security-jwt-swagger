@@ -10,4 +10,9 @@ class SpringbootProApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    public void testUpdate() {
+        System.out.println("updateCode");
+    }
+
 }
