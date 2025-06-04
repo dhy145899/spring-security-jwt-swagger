@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * 未启用的配置类，和SecurityConfig一样，只是没有启用
+ */
 //@Configuration
 //@EnableWebSecurity
 public class SecurityConfig01 {

@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -51,6 +53,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // 显式启用Spring Security的CORS支持
+                .cors(withDefaults())  // 使用默认配置（会读取您的CorsConfig）
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers(
@@ -62,7 +66,9 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                // 测试跨域
+                                "/testCors"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
